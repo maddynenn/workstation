@@ -1,13 +1,57 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QTextEdit, QComboBox, QPushButton, QLabel, QHBoxLayout, QVBoxLayout
 from open_types import *
 import json
+import os
 
 class Home(QWidget):
-    def __init__(self):
+    def __init__(self, file_path="app_data.json"):
         super().__init__()
+
+        self.file_path = file_path
+        self.data = self.load_or_create_data()
+
         self.settings()
         self.initUI()
         self.button_click()
+
+    def load_or_create_data(self):
+        if os.path.exists(self.file_path):
+            try:
+                with open(self.file_path, 'r') as file:
+                    return json.load(file)
+            except (json.JSONDecodeError, IOError) as e:
+                print(f"Error reading file {e}")
+                return self.create_default_data()
+        else:
+            default_data = self.create_default_data()
+            self.save_data(default_data)
+            return default_data
+
+    def create_default_data(self):
+        return {
+            "work_group": {
+                "name": "Work Setup",
+                "items": []
+            },
+            "personal_group": {
+                "name": "Personal Setup",
+                "items": []
+            }
+        }
+
+    def save_data(self, data=None):
+        if data is None:
+            data = self.data
+        try:
+            with open(self.file_path, 'w') as file:
+                json.dump(data, file, indent=2)
+            return True
+        except IOError as e:
+            print(f"Error saving file: {e}")
+            return False
+    
+    def get_group_display_names(self):
+        return [group_data.get("name", group_key) for group_key, group_data in self.data.items()]
     
     def initUI(self):
         self.input_box_path = QTextEdit()
