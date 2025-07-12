@@ -1,0 +1,32 @@
+{
+  "work_group": {
+    "name": "Work Setup",
+    "items": [
+      {
+        "title": "blender renders",
+        "type": "application",
+        "path": "F:\\Onedrives\\OneDrive\\Projects\\Blender\\_Blender Renders"
+      },
+      {
+        "title": "blender renders",
+        "type": "application",
+        "path": "F:\\Onedrives\\OneDrive\\Projects\\Blender\\_Blender Renders\\Lawn Mower.png"
+      },
+      {
+        "title": "blender renders",
+        "type": "application",
+        "path": "F:\\Onedrives\\OneDrive\\Projects\\Blender\\_Blender Renders\\Lawn Mower.png"
+      }
+    ]
+  },
+  "personal_group": {
+    "name": "Personal Setup",
+    "items": [
+      {
+        "title": "yeehaw",
+        "type": "application",
+        "path": "ho ho"
+      }
+    ]
+  }
+}
