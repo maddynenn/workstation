@@ -3,3 +3,4 @@ TYPES = [
     "browser tab",
     "file"
 ]
+

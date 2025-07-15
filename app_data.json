@@ -16,17 +16,26 @@
         "title": "blender renders",
         "type": "application",
         "path": "F:\\Onedrives\\OneDrive\\Projects\\Blender\\_Blender Renders\\Lawn Mower.png"
+      },
+      {
+        "title": "f",
+        "type": "application",
+        "path": "C:\\\\users\\\\"
+      },
+      {
+        "title": "google",
+        "type": "browser tab",
+        "path": "http://www.google.com/"
+      },
+      {
+        "title": "logi options",
+        "type": "application",
+        "path": "C:\\Program Files\\Logitech\\LogiOptions\\LogiOptions.exe"
       }
     ]
   },
   "personal_group": {
     "name": "Personal Setup",
-    "items": [
-      {
-        "title": "yeehaw",
-        "type": "application",
-        "path": "ho ho"
-      }
-    ]
+    "items": []
   }
 }

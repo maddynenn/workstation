@@ -1,7 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QTextEdit, QComboBox, QPushButton, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QTextEdit, QComboBox, QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QMessageBox
 from open_types import *
 import json
 import os
+import webbrowser
+import subprocess
 
 class Home(QWidget):
     def __init__(self, file_path="app_data.json"):
@@ -60,6 +62,7 @@ class Home(QWidget):
         self.input_type = QComboBox()
         self.input_box_title = QTextEdit()
         self.input_box_title.setFixedHeight(30)
+        self.run_button = QPushButton("Run Group")
 
         self.input_type.addItems(TYPES)
         self.input_group.addItems(self.get_group_display_names())
@@ -85,6 +88,7 @@ class Home(QWidget):
         col3.addWidget(QLabel("Title:"))
         col3.addWidget(self.input_box_title)
         col3.addWidget(self.submit)
+        col3.addWidget(self.run_button)
         
         # Add stretch to push everything to top
         col1.addStretch()
@@ -104,6 +108,7 @@ class Home(QWidget):
 
     def button_click(self):
         self.submit.clicked.connect(self.submit_path)
+        self.run_button.clicked.connect(self.run_group)
 
     def submit_path(self):
         this_group = self.input_group.currentText()
@@ -112,23 +117,21 @@ class Home(QWidget):
         this_title = self.input_box_title.toPlainText()
         print(f'you just sumbitted an entry of type: {this_type} with the title {this_title} which can be found at {this_file_path} and will be added to this group {this_group}')
         self.add_item_to_group(this_group, this_file_path, this_type, this_title)
+
     
     def add_item_to_group(self, group, file_path, type, title):
-        item = {"title": title, "type":type, "path": file_path}
-        group_key = self.get_group_key_by_name(group)
-        if group_key in self.data:
-            self.data[group_key]["items"].append(item)
-            self.save_data(self.data)
+        if os.path.exists(file_path) or type == "browser tab":
+            item = {"title": title, "type":type, "path": file_path}
+            group_key = self.get_group_key_by_name(group)
+            if group_key in self.data:
+                self.data[group_key]["items"].append(item)
+                self.save_data(self.data)
 
-            self.input_box_path.clear()
-            self.input_box_title.clear()
-
-            print("here")
-
-            # just for testing this function
-            self.start_workgroup("Work Setup")
-            return True
-        
+                self.input_box_path.clear()
+                self.input_box_title.clear()
+                return True
+        else:
+            alert = QMessageBox.warning(self, "Error", "File path does not exist")
         return False
     
         
@@ -144,7 +147,14 @@ class Home(QWidget):
 
         if group_key in self.data:
             for item in self.data[group_key]["items"]:
-                os.startfile(item.get("path")) 
+                if item.get("type") == "browser tab":
+                   webbrowser.open(item.get("path")) 
+                else:
+                    os.startfile(item.get("path")) 
+    
+    def run_group(self):
+        this_group = self.input_group.currentText()
+        self.start_workgroup(this_group)
 
 if __name__ == "__main__":
     app = QApplication([])
